@@ -10,9 +10,11 @@ def handle_minio_event():
     app.logger.info(f"Received MinIO event: {event_data}")
     return jsonify(event_data), 200
 
+
 @app.route('/hello', methods=['GET'])
 def hello():
     return "Hello MinIO!"
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=5000)
