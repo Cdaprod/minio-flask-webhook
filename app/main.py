@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 # Flask app initialization
 app = Flask(__name__)
 
+
 @app.route('/minio-event', methods=['POST'])
 def handle_minio_event():
     event_data = request.json
@@ -18,3 +19,4 @@ def hello():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=5000)
+ 
