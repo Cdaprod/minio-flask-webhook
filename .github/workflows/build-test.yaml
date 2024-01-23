@@ -1,0 +1,47 @@
+name: Build and Test Python Application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Linting
+      run: |
+        pip install flake8
+        flake8 ./app
+
+    - name: Test with pytest
+      run: |
+        pip install pytest
+        pytest ./tests
+
+    - name: Build Docker Image
+      run: |
+        docker build -t my-python-app .
+
+    - name: Run Docker Container
+      run: |
+        docker run --name my-python-app-test -d -p 5000:5000 my-python-app
+
+    - name: Check Docker Container is Running
+      run: |
+        docker ps | grep my-python-app-test
